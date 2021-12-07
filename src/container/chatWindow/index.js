@@ -1,7 +1,8 @@
 import { SendOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Avatar, Button, Tooltip,Form, Input } from 'antd';
-import React from 'react';
+import React, { useContext,  } from 'react';
 import styled from 'styled-components';
+import { AppContext } from '../../components/Context/AppProvider';
 import Message from '../chatRoom/components/Message';
 
 
@@ -64,14 +65,16 @@ const MessageListStyled = styled.div`
 `
 
 const ChatWindow = () => {
+  const {rooms,idRoom} = useContext(AppContext)
 
-
+  const room = rooms.find((r1)=> r1?.id === idRoom)
+  
   return (
     <WrapperStyled>
       <HeaderStyled>
       <div className="header_info">
-        <p className="header_title">hello room 1</p>
-        <span className="header_description">this is room 1</span>
+        <p className="header_title">{room?.name}</p>
+        <span className="header_description">{room?.description}</span>
       </div>
       <ButtonGroupStyle>
         <Button type='text'><UserAddOutlined />Add</Button>
@@ -93,10 +96,10 @@ const ChatWindow = () => {
       </HeaderStyled>
     <ContentStyled>
       <MessageListStyled>
-        <Message text='Hello' photoURL={null} displayName="Quy" createAt={1231} />
-        <Message text='Hello1' photoURL={null} displayName="Quy" createAt={1231} />
-        <Message text='Hello2' photoURL={null} displayName="Quy" createAt={1231} />
-        <Message text='Hello3' photoURL={null} displayName="Quy" createAt={1231} />
+        <Message text='Hello' photoURL={null} displayName="Quy" createdAt={1231} />
+        <Message text='Hello1' photoURL={null} displayName="Quy" createdAt={1231} />
+        <Message text='Hello2' photoURL={null} displayName="Quy" createdAt={1231} />
+        <Message text='Hello3' photoURL={null} displayName="Quy" createdAt={1231} />
       </MessageListStyled>
       <FormStyled>
         <Form.Item>

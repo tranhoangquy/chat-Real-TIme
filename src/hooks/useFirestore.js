@@ -1,36 +1,48 @@
-import React from 'react';
+import  { useEffect, useState } from 'react';
 import { db } from '../components/firebase/config';
 
 
 const useFirestore = (collection,condition) => {
+
+  const [documents,setDocuments] =useState([])
+
   useEffect(()=>{
-    let collectionRef =  db.collection(collection).orderBy('createAt')
+    let collectionRef =  db.collection(collection).orderBy('createdAt')
+    //condition
+    /**
+     * {
+     * fieldName: 'abc,
+     * operator: '=='
+     *  compareValue:acb
+     * * }
+     * 
+     */
+      if(condition){
+      if( !condition.compareValue || !condition?.compareValue.length) {
+        setDocuments([]);
 
-//condition
-/**
- * {
- * fieldName: 'abc,
- * operator: '=='
- *  compareValue:acb
- * * }
- * 
- */
+        return
+        } ;
 
-    // if(condition){
-    //   !condition.compareValue || !collection.compareValue.length {return} ;
-
-    //   collectionRef.where(condition.feildName, condition.operator, condition.compareValue)
-    // }
-    
-    // .onSnapshot((snapshot)=>{
-    //  const data =snapshot.docs.map(doc=>({
-    //   ...doc.data(),
-    //   id:doc.id
-    //  }))
-    //  console.log({data,snapshot,docs:snapshot.docs});
-
-    // })
-  },[])
+        collectionRef = collectionRef.where(
+          condition.fieldName,
+          condition.operator,
+          condition.compareValue
+        );
+      }
+      const unsubscribe = collectionRef.onSnapshot((snapshot) => {
+        const documents = snapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+  
+        setDocuments(documents);
+      });
+  
+      return unsubscribe;
+    }, [collection, condition]);
+  
+    return documents;
 };
 
 export default useFirestore;

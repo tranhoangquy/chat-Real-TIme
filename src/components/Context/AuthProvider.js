@@ -1,10 +1,10 @@
  import { Spin } from 'antd';
-import React, {  useEffect, useState } from 'react';
+import React, {  createContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {auth} from "../../components/firebase/config"
 
 
-export const AuthContext = React.createContext()
+export const AuthContext = createContext()
 
  const AuthProvider = ({children}) => {
   const [user,setUser]= useState({})

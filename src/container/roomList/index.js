@@ -1,7 +1,9 @@
 import { PlusSquareOutlined } from '@ant-design/icons';
 import { Button, Collapse, Typography } from 'antd';
-import React from 'react';
+import React, { useContext,  } from 'react';
 import styled from 'styled-components';
+import { AppContext } from '../../components/Context/AppProvider';
+import ModalCreateRoom from './components/ModalCreateRoom';
 
 const {Panel} = Collapse;
 
@@ -26,14 +28,19 @@ const LinkStyled = styled(Typography.Link)`
 `
 
 const RoomList = () => {
+  const {rooms,setIsAddRoomVisible,setIdRoom} = useContext(AppContext)
+  
   return (
     <Collapse ghost defaultActiveKey={['1']}>
       <PanelStyled header="List Room" key='1'>
-        <LinkStyled>Room 1</LinkStyled>
-        <LinkStyled>Room 2</LinkStyled>
-        <LinkStyled>Room 3</LinkStyled>
-        <Button type="text" className='add-room' icon={<PlusSquareOutlined/>}>Add Room</Button>
+        {
+          rooms?.map((room)=>
+          <LinkStyled key={room?.id} onClick={()=>setIdRoom(room?.id)}>{room?.name}</LinkStyled>
+          )
+        }
+        <Button type="text" className='add-room' icon={<PlusSquareOutlined/>} onClick={()=>setIsAddRoomVisible(true)}>Add Room</Button>
       </PanelStyled>
+      <ModalCreateRoom  />
     </Collapse>
   );
 };

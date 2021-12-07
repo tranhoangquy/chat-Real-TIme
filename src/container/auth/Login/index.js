@@ -17,7 +17,8 @@ const Login = () => {
       displayName:user.displayName,
       email:user.email,
       photoURL:user.photoURL,
-      providerId:additionalUserInfo.providerId
+      providerId:additionalUserInfo.providerId,
+      uid: user.uid
     })
 
   }
